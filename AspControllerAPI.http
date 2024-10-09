@@ -1,0 +1,6 @@
+@AspControllerAPI_HostAddress = http://localhost:5224
+
+GET {{AspControllerAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
