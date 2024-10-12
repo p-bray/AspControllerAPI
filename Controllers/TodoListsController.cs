@@ -13,8 +13,8 @@ namespace AspControllerAPI.Controllers
     [ApiController]
     public class TodoListsController : ControllerBase
     {
-        private readonly TodoListContext _context;
-        public TodoListsController(TodoListContext context)
+        private readonly TodoContext _context;
+        public TodoListsController(TodoContext context)
         {
             _context = context;
         }
@@ -37,6 +37,15 @@ namespace AspControllerAPI.Controllers
             return todoList;
         }
 
+        [HttpPost]
+        public async Task<IActionResult> PostTodoList(TodoList list)
+        {
+           _context.TodoLists.Add(list);
+
+           await _context.SaveChangesAsync();
+
+           return CreatedAtAction(nameof(GetTodoList), new {id = list.Id}, list); 
+        }
 
 
 
