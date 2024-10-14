@@ -22,15 +22,17 @@ namespace AspControllerAPI.Controllers
 
         // GET: api/TodoItems
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TodoItem>>> GetTodoItems()
+        public async Task<ActionResult<IEnumerable<TodoItemDTO>>> GetTodoItems()
         {
             //The List gets are simple. All you do is an async call to the ToListAsync() method. 
-            return await _context.TodoItems.ToListAsync();
+            return await _context.TodoItems
+                .Select(x => ItemToDTO(x))
+                .ToListAsync();
         }
 
         // GET: api/TodoItems/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TodoItem>> GetTodoItem(int id)
+        public async Task<ActionResult<TodoItemDTO>> GetTodoItem(long id)
         {
             //placeholder for the results of the FindAsync(id) method. Really just a SELECT query
             var todoItem = await _context.TodoItems.FindAsync(id);
@@ -42,39 +44,38 @@ namespace AspControllerAPI.Controllers
             }
 
             //return the dang thing
-            return todoItem;
+            return ItemToDTO(todoItem);
         }
 
         // PUT: api/TodoItems/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTodoItem(int id, TodoItem todoItem)
+        public async Task<IActionResult> PutTodoItem(long id, TodoItemDTO todoItemDTO)
         {
             //Make sure the id of the new object and the target id match
-            if (id != todoItem.Id)
+            if (id != todoItemDTO.Id)
             {
                 return BadRequest();
             }
 
-            //Set the entry in the list of EntityEntries to have the Modified State enum. 
-            //This finds the entity in the Db, changes it to match the passed entity's properties
-            _context.Entry(todoItem).State = EntityState.Modified;
+            var todoItem = await _context.TodoItems.FindAsync(id);
+            if(todoItem is null)
+            {
+                return NotFound();
+            }
+
+            //DTO conversion 
+            todoItem.Name = todoItemDTO.Name;
+            todoItem.IsComplete = todoItemDTO.IsComplete;
 
             //Concurrency protection
             try
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException) when (!TodoItemExists(id))
             {
-                if (!TodoItemExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
 
             return NoContent();
@@ -83,17 +84,25 @@ namespace AspControllerAPI.Controllers
         // POST: api/TodoItems
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItem todoItem)
+        public async Task<ActionResult<TodoItemDTO>> PostTodoItem(TodoItemDTO todoItemDTO)
         {
+            //create item to save
+            var todoItem = new TodoItem();
+
+            //DTO conversion
+            todoItem.Name = todoItemDTO.Name;
+            todoItem.IsComplete = todoItemDTO.IsComplete;
+
+            //add the real item and save it. 
             _context.TodoItems.Add(todoItem);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetTodoItem), new { id = todoItem.Id }, todoItem);
+            return CreatedAtAction(nameof(GetTodoItem), new { id = todoItem.Id }, ItemToDTO(todoItem));
         }
 
         // DELETE: api/TodoItems/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTodoItem(int id)
+        public async Task<IActionResult> DeleteTodoItem(long id)
         {
             var todoItem = await _context.TodoItems.FindAsync(id);
             if (todoItem == null)
@@ -108,9 +117,18 @@ namespace AspControllerAPI.Controllers
         }
 
         //Helper method to check the Db table for any instances of the entry with passed id. Just to make sure it exists. 
-        private bool TodoItemExists(int id)
+        private bool TodoItemExists(long id)
         {
             return _context.TodoItems.Any(e => e.Id == id);
+        }
+
+        private static TodoItemDTO ItemToDTO(TodoItem todoItem)
+        {
+            TodoItemDTO item = new TodoItemDTO();
+            item.Name = todoItem.Name;
+            item.Id = todoItem.Id;
+            item.IsComplete = todoItem.IsComplete;
+            return item;
         }
     }
 }
