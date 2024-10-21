@@ -8169,21 +8169,19 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\pbr23\\Documents\\WebStuff\\LearningASP\\AspControllerAPI\\AspControllerAPI.csproj",
+      "projectUniqueName": "C:\\Users\\pbr23\\Documents\\WebStuff\\LearningAsp\\AspControllerAPI\\AspControllerAPI.csproj",
       "projectName": "AspControllerAPI",
-      "projectPath": "C:\\Users\\pbr23\\Documents\\WebStuff\\LearningASP\\AspControllerAPI\\AspControllerAPI.csproj",
+      "projectPath": "C:\\Users\\pbr23\\Documents\\WebStuff\\LearningAsp\\AspControllerAPI\\AspControllerAPI.csproj",
       "packagesPath": "C:\\Users\\pbr23\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\pbr23\\Documents\\WebStuff\\LearningASP\\AspControllerAPI\\obj\\",
+      "outputPath": "C:\\Users\\pbr23\\Documents\\WebStuff\\LearningAsp\\AspControllerAPI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\pbr23\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\pbr23\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

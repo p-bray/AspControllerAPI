@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AspControllerAPI.Models;
+using System.Reflection.Metadata.Ecma335;
 
 namespace AspControllerAPI.Controllers
 {
@@ -47,6 +48,17 @@ namespace AspControllerAPI.Controllers
            return CreatedAtAction(nameof(GetTodoList), new {id = list.Id}, list); 
         }
 
+        [HttpPut("/newItem/{id}")]
+        public async Task<IActionResult> NewTodoItem(int listId, TodoItem item)
+        {
+            var list = await _context.TodoLists.FindAsync(listId);
+            if(list is null) return NotFound();
+
+            // PostTodoItem()
+
+            list.NewItem(item);
+            return CreatedAtAction(nameof(GetTodoList), new (id = list.Id), list);
+        }
 
 
 
