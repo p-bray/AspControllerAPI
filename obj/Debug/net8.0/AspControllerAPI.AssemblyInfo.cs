@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AspControllerAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ae251d22eca57e3c72b2733e28eeee36e484e745")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bb3ea5de4d781f96e471905e44d5b63ef594e7b8")]
 [assembly: System.Reflection.AssemblyProductAttribute("AspControllerAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AspControllerAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
